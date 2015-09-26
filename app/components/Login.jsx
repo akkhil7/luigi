@@ -1,22 +1,32 @@
 import React from 'react';
 import Router from 'react-router';
 import Request from 'superagent';
+import API from './API.js';
 
 class Login extends React.Component {
   constructor () {
     super()
-  }
-
-  getInitialState() {
-    isLoggedIn: false
+    this.state = {
+      isLoggedIn: false
+    }
   }
 
   componentWillMount() {
-    if(window.localStorage.token != undefined)
+    console.log(localStorage)
+    if(window.localStorage.token != "")
       this.setState({isLoggedIn: true})
   }
 
+  componentDidMount() {
+
+    var url = API.url('users');
+    console.log(url);
+    var response = API.get(url);
+    console.log(response);
+  }
+
   handleSubmit(e) {
+
     var inputs = document.getElementsByTagName('input');
     var username = inputs[0].value
     var password = inputs[1].value
@@ -34,18 +44,32 @@ class Login extends React.Component {
       console.log(res);
       let response = JSON.parse(res.text)
       const token  = response.token
+      _this.setState({
+        isLoggedIn: true
+      })
       window.localStorage.token = token
     })
   }
 
+  logOut(e) {
+    e.preventDefault();
+    window.localStorage.token = ""
+    console.log(localStorage)
+    this.setState({
+      isLoggedIn: false
+    })
+  }
   render () {
+    if(this.state.isLoggedIn)
+      var logout = <button onClick={this.logOut.bind(this)}> Logout </button>
     return (
       <div className="login-container">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <input type="text" placeholder="enter username" ref="user" />
           <input type="password" placeholder="enter password" ref="pass" />
           <input type="submit" />
         </form>
+        {logout}
       </div>
     );
   }
