@@ -18,21 +18,26 @@ module.exports = {
     return url;
   },
 
-  get: function(url) {
-
-    var response = undefined
+  handleRequest: function(res,success,failure) {
+    if(res.status == 200)
+      success(res);
+    else
+      failure(res);
+    
+  },
+  get: function(url, success, failure) {
+    var _this = this
     request.get(url, function(err,res) {
-      return res;
+      _this.handleRequest(res,success,failure)
     })
   },
 
-  post: function(url, data) {
-    
-    var response = undefined
-    request.post(url, data, function(res) {
-      response = JSON.parse(res.text)
+
+  post: function(url, data, success, failure) {
+    var _this = this
+    request.post(url, data, function(err,res) {
+      _this.handleRequest(res,success,failure)
     })
-    return response
   }
 
 }

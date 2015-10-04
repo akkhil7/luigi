@@ -7,7 +7,8 @@ class Login extends React.Component {
   constructor () {
     super()
     this.state = {
-      isLoggedIn: false
+      isLoggedIn: false,
+      isLoggingIn: false,
     }
   }
 
@@ -18,27 +19,52 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-
     var url = API.url('users');
+    var inputs = document.getElementsByTagName('input');
     console.log(url);
-    var response = API.get(url);
-    console.log(response);
-  }
 
+    var success = (res) => {
+      console.log(res);
+      this.setState({
+        isLoggedIn: true
+      })
+      inputs[2].disabled = false
+    }
+
+    var failure = (res) => {
+      console.log(res);
+      inputs[2].disabled = false
+    }
+
+    API.get(url, success, failure)  
+  }
+  
   handleSubmit(e) {
 
     var inputs = document.getElementsByTagName('input');
+    inputs[2].disabled = true
     var username = inputs[0].value
     var password = inputs[1].value
     var user = {
-      username: username,
-      password: password
+      user: {
+        username: username,
+        password: password
+      }
     }
 
     console.log(user);
     e.preventDefault();
+    var url = API.url('tokens/verify');
     var _this = this
-    Request.post("http://localhost:3000/tokens/verify")
+    var success = (res) => {
+      console.log(res)
+    }
+    var failure = (res) => {
+      console.log(res)
+    }
+
+    API.post(url, user, success, failure);
+    /*API.post("http://localhost:3000/tokens/verify")
     .send({user:user})
     .end((err,res) => {
       console.log(res);
@@ -48,7 +74,8 @@ class Login extends React.Component {
         isLoggedIn: true
       })
       window.localStorage.token = token
-    })
+      })
+      */
   }
 
   logOut(e) {
@@ -60,16 +87,13 @@ class Login extends React.Component {
     })
   }
   render () {
-    if(this.state.isLoggedIn)
-      var logout = <button onClick={this.logOut.bind(this)}> Logout </button>
     return (
       <div className="login-container">
         <form onSubmit={this.handleSubmit.bind(this)}>
           <input type="text" placeholder="enter username" ref="user" />
           <input type="password" placeholder="enter password" ref="pass" />
-          <input type="submit" />
+          <input type="submit"/>
         </form>
-        {logout}
       </div>
     );
   }
