@@ -25,6 +25,7 @@ module.exports = {
       failure(res);
     
   },
+  
   get: function(url, success, failure) {
     var _this = this
     request.get(url, function(err,res) {
@@ -35,6 +36,7 @@ module.exports = {
 
   post: function(url, data, success, failure) {
     var _this = this
+    console.log(data)
     request.post(url, data, function(err,res) {
       _this.handleRequest(res,success,failure)
     })

@@ -7,8 +7,7 @@ class Login extends React.Component {
   constructor () {
     super()
     this.state = {
-      isLoggedIn: false,
-      isLoggingIn: false,
+      isLoggedIn: false
     }
   }
 
@@ -18,11 +17,19 @@ class Login extends React.Component {
       this.setState({isLoggedIn: true})
   }
 
-  componentDidMount() {
-    var url = API.url('users');
+  handleSubmit(e) {
+    e.preventDefault();
+    var url = API.url('tokens/verify');
     var inputs = document.getElementsByTagName('input');
-    console.log(url);
-
+    var username = inputs[0].value
+    var password = inputs[1].value
+    var user = {
+      user: {
+        username: username,
+        password: password
+      }
+    }
+    
     var success = (res) => {
       console.log(res);
       this.setState({
@@ -36,46 +43,8 @@ class Login extends React.Component {
       inputs[2].disabled = false
     }
 
-    API.get(url, success, failure)  
-  }
-  
-  handleSubmit(e) {
-
-    var inputs = document.getElementsByTagName('input');
-    inputs[2].disabled = true
-    var username = inputs[0].value
-    var password = inputs[1].value
-    var user = {
-      user: {
-        username: username,
-        password: password
-      }
-    }
-
-    console.log(user);
-    e.preventDefault();
-    var url = API.url('tokens/verify');
-    var _this = this
-    var success = (res) => {
-      console.log(res)
-    }
-    var failure = (res) => {
-      console.log(res)
-    }
-
-    API.post(url, user, success, failure);
-    /*API.post("http://localhost:3000/tokens/verify")
-    .send({user:user})
-    .end((err,res) => {
-      console.log(res);
-      let response = JSON.parse(res.text)
-      const token  = response.token
-      _this.setState({
-        isLoggedIn: true
-      })
-      window.localStorage.token = token
-      })
-      */
+    API.post(url, user, success, failure)  
+          
   }
 
   logOut(e) {
@@ -88,15 +57,24 @@ class Login extends React.Component {
   }
   render () {
     return (
-      <div className="login-container">
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <input type="text" placeholder="enter username" ref="user" />
-          <input type="password" placeholder="enter password" ref="pass" />
-          <input type="submit"/>
-        </form>
+      <div>
+        <div className="background-blur"> </div>
+        <div className="form-container">
+          <h2 className='form-text'> Login </h2>
+          <hr />
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <input type="text" placeholder="Username" />
+            <input type="password" placeholder="Password" />
+            <input type="submit" value="Login" />
+          </form>
+        </div>
       </div>
     );
   }
+}
+
+Login.contextTypes = {
+  router: React.PropTypes.func.isRequired
 }
 
 module.exports = Login;
