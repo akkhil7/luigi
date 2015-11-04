@@ -44,13 +44,9 @@ class Dashboard extends React.Component{
   }
 
   uploadFile(file) {
+    
     var url = API.url('imageposts')
-    var file = {
-      imagepost: {
-        image: file,
-        user_id: this.state.current_user.id
-      }
-    }
+    console.log(file)
     var success = (res) => {
       alert("file uploaded")
       console.log(res)
@@ -60,7 +56,16 @@ class Dashboard extends React.Component{
       console.log(res)
     }
 
-    API.post(url,file,success,failure)
+    Request.post(url)
+    .set('Authorization', 'Token token=' + localStorage.token)
+    .field('imagepost[user_id]', this.state.current_user.id)
+    .attach('imagepost[image]', file, file.name)
+    .end((err,res) => {
+      if(res.status == 200)
+        success(res)
+      else
+        failure(res)
+    })
 
   }
   render () {
