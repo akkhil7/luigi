@@ -37,9 +37,13 @@ module.exports = {
   post: function(url, data, success, failure) {
     var _this = this
     console.log(data)
-    request.post(url, data, function(err,res) {
+    request.post(url)
+    .set('Authorization', 'Token token=' + localStorage.token)
+    .send(data)
+    .end((err,res) => {
       _this.handleRequest(res,success,failure)
-    })
+      })
+
   }
 
 }

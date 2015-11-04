@@ -1,26 +1,43 @@
-.nav-bar
-  +span-columns(12)
-  background: rgba(255,255,255,1)
-  height: 40px
-  padding-top: 8px
-  margin-top: 10px
-  font-weight: 200
+.flash-warning
+  +span-columns(10)
+  border-radius: 5px
+  background-color: #fdeacb
+  padding: 10px 10px
+  margin-top: 20px
+  margin-bottom: 20px
+  text-align: center
 
-  li
-    +span-columns(2)
-    list-style-type: none
-    text-align: center
-
-.avatar
-  +span-columns(4.5)
-  +omega()
-  text-align: left
-  position: relative
-  
   span
-    margin-right: 10px
+    color: #a5741e
 
-  .gravatar
-    position: absolute
-    top: -5px
-    right: 0
+.upload
+  +span-columns(12)
+  background-color: white
+  color: #2b9ef6
+  border: 1px solid #2b9ef6
+  margin-top: 10px
+  margin-bottom: 10px
+
+.upload:hover
+  background-color: #2b9ef6
+  color: white
+  transition: background 200ms ease-in
+
+.file-button 
+  position: absolute
+  left: -9999px
+
+.pay-now
+  +span-columns(2)
+  +omega()
+  background-color: #79d284
+  margin: 20px 0
+  height: 43px
+
+.pay-now:hover
+  background-color: #86b968
+
+.image-list
+  border-radius: 10px
+  background-color: #dbdbdb
+  margin-top: 10px

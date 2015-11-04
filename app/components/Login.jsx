@@ -36,6 +36,8 @@ class Login extends React.Component {
         isLoggedIn: true
       })
       inputs[2].disabled = false
+      var response = JSON.parse(res.text)
+      localStorage.token = response.token
     }
 
     var failure = (res) => {
