@@ -6,6 +6,7 @@ import Request from 'superagent';
 import _ from 'lodash';
 import NavBar from './NavBar.jsx'
 import API from './API.js';
+import ImageList from './ImageList.jsx';
 
 class Dashboard extends React.Component{
 
@@ -16,13 +17,13 @@ class Dashboard extends React.Component{
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     var url = API.url('users/me')
-    console.log(localStorage)
+    var _this = this
     var success = (res) => {
       console.log(res)
-      var user = JSON.parse(res.text)
-      this.setState({current_user: user})
+      var user = JSON.parse(res.text).user
+      _this.setState({current_user: user})
     }
     var failure = (res) => {
       console.log(res)
@@ -30,45 +31,12 @@ class Dashboard extends React.Component{
     API.get(url,success,failure)
   }
 
-  fileClicker(e) {
-    e.preventDefault();
-    var elem = document.getElementsByClassName('file-button')[0]
-    elem.click()
-  }
-  
-  handleFileChange(e) {
-    e.preventDefault()
-    var file  = document.getElementsByClassName('file-button')[0].files[0]
-    this.uploadFile(file);
-    console.log("Gonna start uploading")
-  }
-
-  uploadFile(file) {
+    render () {
+    var user = this.state.current_user
+    var display;
+    if(!_.isEmpty(user))
+      display = <ImageList user={user} />
     
-    var url = API.url('imageposts')
-    console.log(file)
-    var success = (res) => {
-      alert("file uploaded")
-      console.log(res)
-    }
-    var failure = (res) => {
-      alert('file not uploaded')
-      console.log(res)
-    }
-
-    Request.post(url)
-    .set('Authorization', 'Token token=' + localStorage.token)
-    .field('imagepost[user_id]', this.state.current_user.id)
-    .attach('imagepost[image]', file, file.name)
-    .end((err,res) => {
-      if(res.status == 200)
-        success(res)
-      else
-        failure(res)
-    })
-
-  }
-  render () {
     return (
       <div className="dashboard">
         <NavBar />
@@ -79,12 +47,7 @@ class Dashboard extends React.Component{
         <button className="pay-now">
           Pay Now
         </button>
-        <button onClick={this.fileClicker.bind(this)} className="upload">
-          Upload Photo
-        </button>
-        <input onChange={this.handleFileChange.bind(this)} type="file" ref="file" className="file-button">
-        </input>
-
+       {display}
       </div>
     );
   }
