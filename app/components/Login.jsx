@@ -7,7 +7,7 @@ class Login extends React.Component {
   constructor () {
     super()
     this.state = {
-      isLoggedIn: false
+      isLoggingIn: false
     }
   }
 
@@ -23,6 +23,10 @@ class Login extends React.Component {
     var inputs = document.getElementsByTagName('input');
     var username = inputs[0].value
     var password = inputs[1].value
+    this.setState({
+      isLoggingIn: true
+    })
+    
     var user = {
       user: {
         username: username,
@@ -32,9 +36,7 @@ class Login extends React.Component {
     
     var success = (res) => {
       console.log(res);
-      this.setState({
-        isLoggedIn: true
-      })
+      this.context.router.transitionTo('dashboard');
       inputs[2].disabled = false
       var response = JSON.parse(res.text)
       localStorage.token = response.token

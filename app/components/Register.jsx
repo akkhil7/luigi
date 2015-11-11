@@ -3,6 +3,7 @@
 import React from 'react';
 import Router from 'react-router';
 import Request from 'superagent';
+import API from './API.js';
 
 class Register extends React.Component{
 
@@ -22,18 +23,26 @@ class Register extends React.Component{
     var password   = inputs[4].value;
 
     var user = {
-      first_name: first_name,
-      last_name: last_name,
-      username: username,
-      password: password,
-      email: email
+      user: {
+        first_name: first_name,
+        last_name: last_name,
+        username: username,
+        password: password,
+        email: email
+      }
     }
 
-    Request.post("https://arcane-citadel-2839.herokuapp.com/users")
-    .send({user:user})
-    .end((err,res) => {
-      console.log(res);
-    })
+    var success = (res) => {
+      console.log(res)
+    }
+
+    var failure = (res) => {
+      console.log(res)
+    }
+    
+    var url = API.url('users')
+
+    API.post(url,user,success,failure)
   }
 
   render () {
