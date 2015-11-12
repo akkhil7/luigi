@@ -9,6 +9,8 @@
 
   span
     color: #a5741e
+.avatar
+  position: relative
 
 .upload
   +span-columns(12)
@@ -55,4 +57,22 @@
   background-repeat: no-repeat
   height: 40px
   border: none
+
+.user-menu 
+  +span-columns(12)
+  position: absolute
+  top: 0px
+  padding: 10px 20px
+  border-radius: 5px
+  right: 0
+  background: rgba(255,255,255,1)
+  height: auto
+  z-index: 100
+  border: 1px solid #2b9ef6
+
+  .menu-item
+    +span-columns(12)
+    +omega()
+    margin-bottom: 5px
+    text-align: left
 

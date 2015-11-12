@@ -18,8 +18,9 @@ class Dashboard extends React.Component{
   }
 
   componentWillMount() {
-    var url = API.url('users/me')
+    var url = API.url('tokens/verify_token')
     var _this = this
+    var token = {token: localStorage.token} 
     var success = (res) => {
       console.log(res)
       var user = JSON.parse(res.text).user
@@ -27,19 +28,23 @@ class Dashboard extends React.Component{
     }
     var failure = (res) => {
       console.log(res)
+      this.context.router.transitionTo('login');
     }
-    API.get(url,success,failure)
+    API.post(url,token,success,failure)
   }
 
-    render () {
+
+
+  render () {
     var user = this.state.current_user
-    var display;
+    var display,menu;
     if(!_.isEmpty(user))
-      display = <ImageList user={user} />
-    
+      { display = <ImageList user={user} />
+        menu = <NavBar user={user} />
+      }
     return (
       <div className="dashboard">
-        <NavBar />
+        {menu}
         <div className="flash-warning">
           <span> Your account type is Free. You cannot 
             upload a photograph without paying. </span>
@@ -47,10 +52,13 @@ class Dashboard extends React.Component{
         <button className="pay-now">
           Pay Now
         </button>
-       {display}
+        {display}
       </div>
     );
   }
 }
 
+Dashboard.contextTypes = {
+  router: React.PropTypes.func.isRequired
+}
 module.exports = Dashboard;
