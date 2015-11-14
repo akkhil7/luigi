@@ -50,13 +50,13 @@ class ImageList extends React.Component{
   handleFileChange(e) {
     e.preventDefault()
     var file  = document.getElementsByClassName('file-button')[0].files[0]
-    this.uploadFile(file);
+    this.uploadFile(file); // UPLOAD FILE TO SERVER (s3)
     console.log("Gonna start uploading")
     this.setState({isUploading: true})
   }
 
   uploadFile(file) {
-    
+
     var url = API.url('imageposts')
     console.log(file)
     var success = (res) => {
@@ -102,21 +102,15 @@ class ImageList extends React.Component{
     
       var display = _.isEmpty(images) ? "No images" : ImageEntries
 
-      if(this.state.isUploading)
-        var isUploadingContent = <img className="loading-icon" />
-      else
-        var isUploadingContent =  (<button onClick={this.fileClicker.bind(this)} className="upload">
-          Upload Photo
-        </button>)
 
     return (
       <div className="image-list">
          <input onChange={this.handleFileChange.bind(this)} type="file" ref="file" className="file-button">
-        </input>
+         </input>
 
-        <UploadOptions />
-        {isUploadingContent}
+        <UploadOptions isUploading={this.state.isUploading} handleUpload={this.fileClicker.bind(this)} />
 
+        {display}
       </div>
     );
   }
