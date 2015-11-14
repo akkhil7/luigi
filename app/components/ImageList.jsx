@@ -6,7 +6,7 @@ import Request from 'superagent';
 import _ from 'lodash';
 import API from './API.js';
 import ImageEntry from './ImageEntry.jsx';
-
+import UploadOptions from './UploadOptions.jsx';
 class ImageList extends React.Component{
 
   constructor () {
@@ -111,12 +111,12 @@ class ImageList extends React.Component{
 
     return (
       <div className="image-list">
-        {isUploadingContent}
-
-        <input onChange={this.handleFileChange.bind(this)} type="file" ref="file" className="file-button">
+         <input onChange={this.handleFileChange.bind(this)} type="file" ref="file" className="file-button">
         </input>
 
-        {display}
+        <UploadOptions />
+        {isUploadingContent}
+
       </div>
     );
   }

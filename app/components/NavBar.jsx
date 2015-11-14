@@ -46,7 +46,6 @@ class NavBar extends React.Component{
       </div>
     )
 
-    var displayMenu = this.state.showMenu ? menu : "" 
     return (
       <div className="nav-bar">
         <ul>

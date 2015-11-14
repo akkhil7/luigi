@@ -3,7 +3,7 @@
 @import "base/base.scss";
 @import "partials/login.sass";
 @import "partials/dashboard.sass";
-
+@import "partials/react-select.scss";
 html {
   height: 100%;
 }
@@ -17,7 +17,6 @@ body {
 
 .wrapper {
   height: 100%;
-  overflow: auto;
   @include outer-container;
 }
 
